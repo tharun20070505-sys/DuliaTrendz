@@ -7,53 +7,55 @@ import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import AdminLayout from './components/layout/AdminLayout';
 
-// Customer Pages (1 - 28)
+// Primary landing page (static import for instant first paint)
 import Home from './pages/Home';
-import Shop from './pages/Shop';
-import AllProducts from './pages/AllProducts';
-import Category from './pages/Category';
-import ProductDetails from './pages/ProductDetails';
-import NewArrivals from './pages/NewArrivals';
-import Bestsellers from './pages/Bestsellers';
-import Collections from './pages/Collections';
-import Sale from './pages/Sale';
-import SearchResults from './pages/SearchResults';
-import Wishlist from './pages/Wishlist';
-import Cart from './pages/Cart';
-import Checkout from './pages/Checkout';
-import OrderSuccess from './pages/OrderSuccess';
-import OrderTracking from './pages/OrderTracking';
-import MyOrders from './pages/MyOrders';
-import OrderDetails from './pages/OrderDetails';
-import MyProfile from './pages/MyProfile';
-import SavedAddresses from './pages/SavedAddresses';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import ForgotPassword from './pages/ForgotPassword';
-import AboutUs from './pages/AboutUs';
-import Contact from './pages/Contact';
-import FAQ from './pages/FAQ';
-import ShippingPolicy from './pages/ShippingPolicy';
-import ReturnPolicy from './pages/ReturnPolicy';
-import PrivacyPolicy from './pages/PrivacyPolicy';
-import TermsConditions from './pages/TermsConditions';
 
-// Admin Pages (29 - 43)
-import AdminLogin from './pages/admin/AdminLogin';
-import AdminDashboard from './pages/admin/AdminDashboard';
-import ProductManagement from './pages/admin/ProductManagement';
-import AddProduct from './pages/admin/AddProduct';
-import EditProduct from './pages/admin/EditProduct';
-import Inventory from './pages/admin/Inventory';
-import CategoriesAdmin from './pages/admin/CategoriesAdmin';
-import CollectionsAdmin from './pages/admin/CollectionsAdmin';
-import OrdersAdmin from './pages/admin/OrdersAdmin';
-import CustomersAdmin from './pages/admin/CustomersAdmin';
-import ReviewsAdmin from './pages/admin/ReviewsAdmin';
-import CouponsAdmin from './pages/admin/CouponsAdmin';
-import HomepageManagement from './pages/admin/HomepageManagement';
-import PaymentManagement from './pages/admin/PaymentManagement';
-import StoreSettingsAdmin from './pages/admin/StoreSettingsAdmin';
+// Customer Pages - Lazy loaded on-demand for lightning-fast initial load
+const Shop = React.lazy(() => import('./pages/Shop'));
+const AllProducts = React.lazy(() => import('./pages/AllProducts'));
+const Category = React.lazy(() => import('./pages/Category'));
+const ProductDetails = React.lazy(() => import('./pages/ProductDetails'));
+const NewArrivals = React.lazy(() => import('./pages/NewArrivals'));
+const Bestsellers = React.lazy(() => import('./pages/Bestsellers'));
+const Collections = React.lazy(() => import('./pages/Collections'));
+const Sale = React.lazy(() => import('./pages/Sale'));
+const SearchResults = React.lazy(() => import('./pages/SearchResults'));
+const Wishlist = React.lazy(() => import('./pages/Wishlist'));
+const Cart = React.lazy(() => import('./pages/Cart'));
+const Checkout = React.lazy(() => import('./pages/Checkout'));
+const OrderSuccess = React.lazy(() => import('./pages/OrderSuccess'));
+const OrderTracking = React.lazy(() => import('./pages/OrderTracking'));
+const MyOrders = React.lazy(() => import('./pages/MyOrders'));
+const OrderDetails = React.lazy(() => import('./pages/OrderDetails'));
+const MyProfile = React.lazy(() => import('./pages/MyProfile'));
+const SavedAddresses = React.lazy(() => import('./pages/SavedAddresses'));
+const Login = React.lazy(() => import('./pages/Login'));
+const Register = React.lazy(() => import('./pages/Register'));
+const ForgotPassword = React.lazy(() => import('./pages/ForgotPassword'));
+const AboutUs = React.lazy(() => import('./pages/AboutUs'));
+const Contact = React.lazy(() => import('./pages/Contact'));
+const FAQ = React.lazy(() => import('./pages/FAQ'));
+const ShippingPolicy = React.lazy(() => import('./pages/ShippingPolicy'));
+const ReturnPolicy = React.lazy(() => import('./pages/ReturnPolicy'));
+const PrivacyPolicy = React.lazy(() => import('./pages/PrivacyPolicy'));
+const TermsConditions = React.lazy(() => import('./pages/TermsConditions'));
+
+// Admin Pages - Lazy loaded on-demand
+const AdminLogin = React.lazy(() => import('./pages/admin/AdminLogin'));
+const AdminDashboard = React.lazy(() => import('./pages/admin/AdminDashboard'));
+const ProductManagement = React.lazy(() => import('./pages/admin/ProductManagement'));
+const AddProduct = React.lazy(() => import('./pages/admin/AddProduct'));
+const EditProduct = React.lazy(() => import('./pages/admin/EditProduct'));
+const Inventory = React.lazy(() => import('./pages/admin/Inventory'));
+const CategoriesAdmin = React.lazy(() => import('./pages/admin/CategoriesAdmin'));
+const CollectionsAdmin = React.lazy(() => import('./pages/admin/CollectionsAdmin'));
+const OrdersAdmin = React.lazy(() => import('./pages/admin/OrdersAdmin'));
+const CustomersAdmin = React.lazy(() => import('./pages/admin/CustomersAdmin'));
+const ReviewsAdmin = React.lazy(() => import('./pages/admin/ReviewsAdmin'));
+const CouponsAdmin = React.lazy(() => import('./pages/admin/CouponsAdmin'));
+const HomepageManagement = React.lazy(() => import('./pages/admin/HomepageManagement'));
+const PaymentManagement = React.lazy(() => import('./pages/admin/PaymentManagement'));
+const StoreSettingsAdmin = React.lazy(() => import('./pages/admin/StoreSettingsAdmin'));
 
 // Scroll to top helper
 const ScrollToTop = () => {
@@ -96,7 +98,7 @@ const AdminRoute = ({ children }) => {
     );
   }
 
-  if (!user || user.role !== 'admin') {
+  if (!user || (user.role !== 'admin' && user.role !== 'staff')) {
     return <Navigate to="/admin/login" replace />;
   }
 
@@ -137,11 +139,20 @@ const NotFound = () => {
   );
 };
 
+// Luxury Suspense Loading Fallback
+const PageLoader = () => (
+  <div className="min-h-[50vh] flex flex-col items-center justify-center bg-ivory">
+    <div className="w-9 h-9 border-2 border-burgundy border-t-transparent rounded-full animate-spin"></div>
+    <span className="mt-3 text-[11px] uppercase tracking-widest text-burgundy font-serif">Dulia Trendz</span>
+  </div>
+);
+
 function App() {
   return (
     <>
       <ScrollToTop />
-      <Routes>
+      <React.Suspense fallback={<PageLoader />}>
+        <Routes>
         {/* ================= CUSTOMER ROUTES ================= */}
         <Route
           path="/"
@@ -431,6 +442,7 @@ function App() {
           }
         />
       </Routes>
+      </React.Suspense>
     </>
   );
 }

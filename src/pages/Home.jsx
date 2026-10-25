@@ -57,7 +57,7 @@ const Home = () => {
       {/* 2. CAROUSEL 2 — SHOP BY CATEGORY CAROUSEL (5 Slides) */}
       <CategoryCarousel slides={homepageData.categorySlides} />
 
-      {/* 3. CAROUSEL 3 — NEW ARRIVALS CAROUSEL (Dynamic from MongoDB) */}
+      {/* 3. CAROUSEL 3 — NEW ARRIVALS CAROUSEL (Dynamic from Turso DB) */}
       <NewArrivalsCarousel
         products={homepageData.newArrivals}
         onQuickView={(p) => setQuickViewProduct(p)}

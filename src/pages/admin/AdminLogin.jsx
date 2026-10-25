@@ -14,10 +14,10 @@ const AdminLogin = () => {
   const navigate = useNavigate();
 
   const handleAdminGoogleSuccess = (authUser) => {
-    if (authUser?.role === 'admin') {
+    if (authUser?.role === 'admin' || authUser?.role === 'staff') {
       navigate('/admin');
     } else {
-      toast.error('This Google account is registered as a customer and does not have admin privileges.');
+      toast.error('This Google account is registered as a customer and does not have staff/admin privileges.');
     }
   };
 
@@ -28,10 +28,10 @@ const AdminLogin = () => {
     setLoading(false);
 
     if (res?.success) {
-      if (res.user?.role === 'admin') {
+      if (res.user?.role === 'admin' || res.user?.role === 'staff') {
         navigate('/admin');
       } else {
-        toast.error('Access denied: Customer account does not have Admin privileges.');
+        toast.error('Access denied: Customer account does not have Admin or Staff privileges.');
       }
     }
   };

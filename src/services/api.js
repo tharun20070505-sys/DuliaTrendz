@@ -21,8 +21,18 @@ API.interceptors.request.use((config) => {
 API.interceptors.response.use(
   (response) => response,
   (error) => {
-    const message =
-      error.response?.data?.message || error.message || 'Something went wrong. Please check your connection and try again.';
+    let message = error.response?.data?.message;
+
+    if (!message) {
+      if (error.response?.status === 404) {
+        message = 'Cannot connect to API backend (404 Not Found). Please verify that the backend server is running on port 5001.';
+      } else if (error.code === 'ERR_NETWORK' || !error.response) {
+        message = 'Backend server is not reachable. Please ensure the backend server is started.';
+      } else {
+        message = error.message || 'Something went wrong. Please check your connection and try again.';
+      }
+    }
+
     return Promise.reject(new Error(message));
   }
 );

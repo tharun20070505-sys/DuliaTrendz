@@ -1,0 +1,1 @@
+import{j as t}from"./ui-BfPMFp4W.js";import"./vendor-g8yDiB2E.js";import{A as o}from"./AuthPage-UO79_Fnn.js";import"./index-CRJmJ1ZD.js";const s=()=>t.jsx(o,{initialTab:"login"});export{s as default};

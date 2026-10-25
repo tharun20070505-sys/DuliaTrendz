@@ -78,6 +78,9 @@ const HeroCarousel = ({ slides = [] }) => {
               <img
                 src={slide.image}
                 alt={slide.heading}
+                loading={idx === 0 ? "eager" : "lazy"}
+                decoding="async"
+                fetchPriority={idx === 0 ? "high" : "low"}
                 className="w-full h-full object-cover object-center filter brightness-[0.85]"
               />
               {/* Soft Gradient Overlay ensuring text legibility without obscuring faces */}

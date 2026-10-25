@@ -1,0 +1,1 @@
+import{j as t}from"./ui-BfPMFp4W.js";import"./vendor-g8yDiB2E.js";import{A as r}from"./AuthPage-UO79_Fnn.js";import"./index-CRJmJ1ZD.js";const e=()=>t.jsx(r,{initialTab:"signup"});export{e as default};
