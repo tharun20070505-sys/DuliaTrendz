@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+.npm
+.pnpm-store
+
+# Environment files
+.env
+.env.local
+.env.*.local
+.env.production
+!.env.example
+
+# Build artifacts
+dist/
+build/
+.output/
+
+# Local database and uploads
+backend/.mongo-data/
+.mongo-data/
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# System and logs
+*.log
+.DS_Store
+Thumbs.db

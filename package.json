@@ -1,0 +1,16 @@
+{
+  "name": "dulia-trendz",
+  "version": "1.0.0",
+  "description": "Dulia Trendz — Complete Full-Stack Women's Wear E-Commerce Platform",
+  "scripts": {
+    "build": "cd frontend && npm run build",
+    "dev": "npm run dev:backend & npm run dev:frontend",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "seed": "cd backend && npm run seed",
+    "build:frontend": "cd frontend && npm run build"
+  },
+  "keywords": ["ecommerce", "fashion", "mern", "dulia-trendz"],
+  "author": "Dulia Trendz",
+  "license": "ISC"
+}

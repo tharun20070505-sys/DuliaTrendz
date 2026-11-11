@@ -1,0 +1,215 @@
+@import 'swiper/css';
+@import 'swiper/css/navigation';
+@import 'swiper/css/pagination';
+@import 'swiper/css/effect-fade';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  body {
+    background-color: #F7F0E8;
+    color: #292524;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    overflow-x: hidden;
+    max-width: 100vw;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  h1, h2, h3, .font-serif {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+}
+
+/* Custom Swiper pagination and navigation styling in Burgundy/Champagne */
+.swiper-pagination-bullet {
+  background: #292524 !important;
+  opacity: 0.3 !important;
+  transition: all 0.3s ease !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: #641F36 !important;
+  opacity: 1 !important;
+  width: 24px !important;
+  border-radius: 9999px !important;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #641F36 !important;
+  width: 44px !important;
+  height: 44px !important;
+  background: rgba(247, 240, 232, 0.85);
+  backdrop-filter: blur(8px);
+  border-radius: 9999px;
+  border: 1px solid rgba(217, 185, 155, 0.4);
+  box-shadow: 0 4px 12px rgba(41, 37, 36, 0.08);
+  transition: all 0.25s ease;
+}
+
+@media (max-width: 640px) {
+  .swiper-button-next,
+  .swiper-button-prev {
+    display: none !important;
+  }
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background: #641F36 !important;
+  color: #FFFFFF !important;
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+  font-size: 16px !important;
+  font-weight: 700;
+}
+
+/* Hide scrollbar for clean carousel tabs */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Font DM Sans */
+.font-dm {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Top Announcement Reel-Style Marquee (28s Slow Infinite Loop with Pause on Hover & Reduced Motion) */
+@keyframes marqueeScroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee-scroll {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: marqueeScroll 28s linear infinite;
+}
+
+.marquee-pause-group:hover .animate-marquee-scroll {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee-scroll {
+    animation: none;
+    transform: none;
+  }
+}
+
+/* Boutique Dropdown & Mega Menu Animations */
+@keyframes dropdownReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-dropdown-reveal {
+  animation: dropdownReveal 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes megaMenuSlideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-megamenu-reveal {
+  animation: megaMenuSlideDown 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Luxury Editorial Slow Zoom */
+@keyframes editorialSlowZoom {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.06);
+  }
+}
+
+.animate-slow-zoom {
+  animation: editorialSlowZoom 20s ease-out infinite alternate;
+}
+
+/* Success Checkmark Circle Reveal */
+@keyframes checkmarkScale {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-checkmark {
+  animation: checkmarkScale 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Smooth Fade In */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Modal Scale Up */
+@keyframes scaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-scaleUp {
+  animation: scaleUp 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+
