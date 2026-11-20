@@ -19,6 +19,7 @@ export const protect = async (req, res, next) => {
   if (token) {
     try {
       const decoded = jwt.verify(token, ACCESS_SECRET);
+      if (decoded.iss === 'admin-portal') throw new Error('Legacy session requires sign-in');
       const user = await User.findById(decoded.id).select('-password');
 
       if (!user) {
@@ -109,6 +110,7 @@ export const optionalAuth = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, ACCESS_SECRET);
+    if (decoded.iss === 'admin-portal') throw new Error('Legacy session requires sign-in');
     const user = await User.findById(decoded.id).select('-password');
     req.user = user?.isActive !== false ? user : null;
   } catch (error) {

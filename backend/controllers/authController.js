@@ -1,4 +1,6 @@
 import crypto from 'crypto';
+import bcrypt from 'bcryptjs';
+import { getTurso } from '../config/turso.js';
 import { OAuth2Client } from 'google-auth-library';
 import User from '../models/User.js';
 import { generateTokens, clearTokenCookie } from '../utils/generateToken.js';
@@ -63,14 +65,60 @@ export const register = async (req, res, next) => {
   }
 };
 
+const migrateLegacyAdmin = async (email, password) => {
+  const client = await getTurso();
+  const { rows } = await client.execute(
+    "SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'admins'"
+  );
+  if (!rows.length) return null;
+
+  const { rows: admins } = await client.execute({
+    sql: `SELECT email, password_hash, role FROM admins
+          WHERE email = ? COLLATE NOCASE AND role IN ('admin', 'staff') LIMIT 1`,
+    args: [email],
+  });
+  const legacy = admins[0];
+  if (typeof legacy?.password_hash !== 'string' || !(await bcrypt.compare(password, legacy.password_hash))) {
+    return null;
+  }
+
+  const id = crypto.randomBytes(12).toString('hex');
+  const now = new Date().toISOString();
+  const user = {
+    _id: id,
+    id,
+    email,
+    name: legacy.role === 'admin' ? 'Dulia Administrator' : 'Dulia Staff',
+    role: legacy.role,
+    password: legacy.password_hash,
+    provider: 'local',
+    isActive: true,
+    createdAt: now,
+    updatedAt: now,
+  };
+
+  await client.execute({
+    sql: `INSERT INTO users (id, data, createdAt, updatedAt)
+          SELECT ?, ?, ?, ? FROM admins
+          WHERE email = ? COLLATE NOCASE AND password_hash = ? AND role = ?
+            AND NOT EXISTS (
+              SELECT 1 FROM users WHERE json_extract(data, '$.email') = ? COLLATE NOCASE
+            )
+          LIMIT 1`,
+    args: [id, JSON.stringify(user), now, now, email, legacy.password_hash, legacy.role, email],
+  });
+
+  return User.findOne({ email });
+};
+
 // @desc    Authenticate user with email & password
 // @route   POST /api/auth/login
 // @access  Public
 export const login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { email, password } = req.body || {};
 
-    if (!email || !password) {
+    if (typeof email !== 'string' || !email.trim() || typeof password !== 'string' || !password || password.length > 128) {
       return res.status(400).json({ success: false, message: 'Please provide both email and password.' });
     }
 
@@ -79,7 +127,9 @@ export const login = async (req, res, next) => {
     if (!user && (normalizedEmail === 'admin@duliatrendz.com' || normalizedEmail === 'admin@duliatrenz.com')) {
       user = await User.findOne({ email: { $in: ['admin@duliatrendz.com', 'admin@duliatrenz.com'] } });
     }
-    if (!user) {
+    if (!user) user = await migrateLegacyAdmin(normalizedEmail, password);
+
+    if (!user || (req.path === '/admin/login' && !['admin', 'staff'].includes(user.role))) {
       return res.status(401).json({ success: false, message: 'Invalid email or password.' });
     }
 

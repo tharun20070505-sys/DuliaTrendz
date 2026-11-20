@@ -3,7 +3,11 @@
   "outputDirectory": "frontend/dist",
   "rewrites": [
     {
-      "source": "/api/:path((?!health$|auth/login$|admin/login$|express$).*)",
+      "source": "/api/admin/login",
+      "destination": "/api/express?__dulia_route=auth/admin/login"
+    },
+    {
+      "source": "/api/:path((?!health$|admin/login$|express$).*)",
       "destination": "/api/express?__dulia_route=:path"
     },
     {
