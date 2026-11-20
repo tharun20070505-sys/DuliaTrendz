@@ -199,7 +199,7 @@ const Header = () => {
 
           <Link to="/" className="flex items-center space-x-2 sm:space-x-3 group py-1">
             <img
-              src="/logo.png"
+              src="/logo.webp"
               alt="Dulia Trendz Logo"
               className="w-9 h-9 sm:w-11 sm:h-11 lg:w-[52px] lg:h-[52px] object-contain rounded-full shadow-xs group-hover:scale-105 transition-transform"
             />
@@ -666,7 +666,7 @@ const Header = () => {
                   className="flex items-center space-x-3"
                 >
                   <img
-                    src="/logo.png"
+                    src="/logo.webp"
                     alt="Dulia Trendz Logo"
                     className="w-10 h-10 object-contain rounded-full shadow-xs"
                   />

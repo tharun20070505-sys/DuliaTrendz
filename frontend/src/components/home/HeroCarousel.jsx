@@ -4,6 +4,16 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination, EffectFade, Keyboard } from 'swiper/modules';
 import { FiArrowRight } from 'react-icons/fi';
 
+const getHeroSrcSet = (image) => {
+  if (!image?.startsWith('https://images.unsplash.com/')) return undefined;
+
+  const url = new URL(image);
+  return [640, 960, 1280, 1800].map((width) => {
+    url.searchParams.set('w', String(width));
+    return `${url.href} ${width}w`;
+  }).join(', ');
+};
+
 const HeroCarousel = ({ slides = [] }) => {
   const defaultSlides = [
     {
@@ -77,6 +87,8 @@ const HeroCarousel = ({ slides = [] }) => {
             <div className="absolute inset-0">
               <img
                 src={slide.image}
+                srcSet={getHeroSrcSet(slide.image)}
+                sizes="100vw"
                 alt={slide.heading}
                 loading={idx === 0 ? "eager" : "lazy"}
                 decoding="async"

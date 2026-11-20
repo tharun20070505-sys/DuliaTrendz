@@ -15,6 +15,34 @@ import {
   FiArrowRight,
 } from 'react-icons/fi';
 
+let razorpayScript;
+
+const loadRazorpay = () => {
+  if (window.Razorpay) return Promise.resolve(window.Razorpay);
+
+  if (!razorpayScript) {
+    razorpayScript = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      const fail = () => {
+        script.remove();
+        reject(new Error('Razorpay could not load. Please try again.'));
+      };
+      script.onload = () => {
+        if (window.Razorpay) resolve(window.Razorpay);
+        else fail();
+      };
+      script.onerror = fail;
+      document.head.appendChild(script);
+    }).catch((error) => {
+      razorpayScript = undefined;
+      throw error;
+    });
+  }
+
+  return razorpayScript;
+};
+
 const Checkout = () => {
   const { user, isAuthenticated } = useAuth();
   const { cartItems, subtotal, discountAmount, total, clearCart, cart } = useCart();
@@ -149,8 +177,7 @@ const Checkout = () => {
 
       const { razorpayOrder, keyId } = payOrderData;
 
-      // If in simulation mode or Razorpay window is simulated
-      if (razorpayOrder.mode === 'simulation' || !window.Razorpay) {
+      if (razorpayOrder.mode === 'simulation') {
         // Direct simulation confirmation
         console.log('Completing payment in simulated demonstration mode...');
         const { data: verifyData } = await API.post('/payments/verify', {
@@ -212,7 +239,8 @@ const Checkout = () => {
         },
       };
 
-      const rzp = new window.Razorpay(options);
+      const Razorpay = await loadRazorpay();
+      const rzp = new Razorpay(options);
       rzp.open();
     } catch (err) {
       toast.error(err.message || 'Something went wrong during checkout.');

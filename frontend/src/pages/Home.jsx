@@ -18,7 +18,7 @@ import WhyDuliaTrendz from '../components/home/WhyDuliaTrendz';
 import CustomerReviewsSection from '../components/home/CustomerReviewsSection';
 import InstagramGallery from '../components/home/InstagramGallery';
 import RecentlyViewed from '../components/home/RecentlyViewed';
-import QuickViewModal from '../components/common/QuickViewModal';
+const QuickViewModal = React.lazy(() => import('../components/common/QuickViewModal'));
 
 const Home = () => {
   const [homepageData, setHomepageData] = useState({
@@ -29,7 +29,6 @@ const Home = () => {
     bestsellers: [],
     trending: [],
   });
-  const [loading, setLoading] = useState(true);
   const [quickViewProduct, setQuickViewProduct] = useState(null);
 
   useEffect(() => {
@@ -41,8 +40,6 @@ const Home = () => {
         }
       } catch (err) {
         console.warn('Homepage fetch error:', err.message);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -103,11 +100,15 @@ const Home = () => {
       <RecentlyViewed onQuickView={(p) => setQuickViewProduct(p)} />
 
       {/* Quick View Modal */}
-      <QuickViewModal
-        product={quickViewProduct}
-        isOpen={!!quickViewProduct}
-        onClose={() => setQuickViewProduct(null)}
-      />
+      {quickViewProduct && (
+        <React.Suspense fallback={null}>
+          <QuickViewModal
+            product={quickViewProduct}
+            isOpen
+            onClose={() => setQuickViewProduct(null)}
+          />
+        </React.Suspense>
+      )}
     </div>
   );
 };

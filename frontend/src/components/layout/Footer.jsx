@@ -82,7 +82,7 @@ const Footer = () => {
           <div className="sm:col-span-2 lg:col-span-2 space-y-4">
             <Link to="/" className="flex items-center space-x-3 group">
               <img
-                src="/logo.png"
+                src="/logo.webp"
                 alt="Dulia Trendz Logo"
                 className="w-12 h-12 object-contain rounded-full bg-ivory/10 p-0.5 group-hover:scale-105 transition-transform"
               />

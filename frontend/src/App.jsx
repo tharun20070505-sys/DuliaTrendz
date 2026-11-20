@@ -5,7 +5,6 @@ import { useAuth } from './context/AuthContext';
 // Layouts & Nav
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
-import AdminLayout from './components/layout/AdminLayout';
 
 // Primary landing page (static import for instant first paint)
 import Home from './pages/Home';
@@ -41,6 +40,7 @@ const PrivacyPolicy = React.lazy(() => import('./pages/PrivacyPolicy'));
 const TermsConditions = React.lazy(() => import('./pages/TermsConditions'));
 
 // Admin Pages - Lazy loaded on-demand
+const AdminLayout = React.lazy(() => import('./components/layout/AdminLayout'));
 const AdminLogin = React.lazy(() => import('./pages/admin/AdminLogin'));
 const AdminDashboard = React.lazy(() => import('./pages/admin/AdminDashboard'));
 const ProductManagement = React.lazy(() => import('./pages/admin/ProductManagement'));

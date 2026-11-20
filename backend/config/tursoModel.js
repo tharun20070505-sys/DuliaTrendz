@@ -299,12 +299,7 @@ class TursoQuery {
       }
     }
 
-    let parsed = [];
-    for (const d of allDocs) {
-      if (filterMatches(d, this.filter)) {
-        parsed.push(JSON.parse(JSON.stringify(d), reviveDates));
-      }
-    }
+    let parsed = allDocs.filter((doc) => filterMatches(doc, this.filter));
 
     // Sort
     if (this._sort && Object.keys(this._sort).length > 0) {
@@ -332,6 +327,9 @@ class TursoQuery {
     if (this._limit > 0) {
       parsed = parsed.slice(0, this._limit);
     }
+
+    // Copy only returned rows before projection or population can mutate them.
+    parsed = parsed.map((doc) => JSON.parse(JSON.stringify(doc), reviveDates));
 
     // Populate relations
     if (this._populates.length > 0) {
