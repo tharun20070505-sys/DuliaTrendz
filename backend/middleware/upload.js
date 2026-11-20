@@ -5,9 +5,6 @@ import cloudinary, { isCloudinaryConfigured } from '../config/cloudinary.js';
 
 // Setup local uploads directory
 const uploadDir = path.resolve(process.cwd(), 'uploads');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
 
 // Memory storage for direct cloudinary stream or disk storage
 const storage = multer.memoryStorage();
@@ -54,7 +51,12 @@ export const uploadImageToService = async (fileBuffer, originalname, folder = 'd
     });
   }
 
+  if (process.env.VERCEL) {
+    throw new Error('Cloudinary must be configured for uploads on Vercel');
+  }
+
   // Local fallback
+  fs.mkdirSync(uploadDir, { recursive: true });
   const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
   const ext = path.extname(originalname) || '.jpg';
   const filename = `img-${uniqueSuffix}${ext}`;

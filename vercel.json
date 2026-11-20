@@ -3,12 +3,13 @@
   "outputDirectory": "frontend/dist",
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
+      "source": "/api/:path((?!health$|auth/login$|admin/login$|express$).*)",
+      "destination": "/api/express?__dulia_route=:path"
     },
     {
-      "source": "/((?!api/).*)",
-      "destination": "/frontend/dist/index.html"
+      "source": "/((?!api(?:/|$)).*)",
+      "destination": "/index.html"
     }
-  ]
+  ],
+  "installCommand": "npm install --omit=dev && npm ci --prefix frontend --include=dev && npm ci --prefix backend"
 }
