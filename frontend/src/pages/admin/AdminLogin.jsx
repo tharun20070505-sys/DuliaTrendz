@@ -97,12 +97,6 @@ const AdminLogin = () => {
             </div>
           </div>
 
-          <div className="bg-charcoal/80 border border-champagne/20 p-3 rounded-xs text-[11px] text-ivory/70 space-y-1">
-            <span className="font-bold text-champagne block">Pre-configured Admin Credentials:</span>
-            <p>Email: <code className="text-white font-mono">admin@duliatrendz.com</code></p>
-            <p>Password: <code className="text-white font-mono">Admin@12345</code></p>
-          </div>
-
           <button
             type="submit"
             disabled={loading}
