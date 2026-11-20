@@ -265,7 +265,7 @@ const EditProduct = () => {
       toast.success('Product updated successfully!');
       navigate('/admin/products');
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Failed to update product');
+      toast.error(err.message || 'Failed to update product');
     } finally {
       setSaving(false);
     }

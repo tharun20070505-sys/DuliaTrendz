@@ -334,11 +334,11 @@ const AddProduct = () => {
         status: publishStatus || formData.status,
       };
 
-      const res = await api.post('/products', payload);
+      await api.post('/products', payload);
       toast.success(publishStatus === 'draft' ? 'Saved as Draft' : 'Product Published Successfully!');
       navigate('/admin/products');
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Failed to save product');
+      toast.error(err.message || 'Failed to save product');
     } finally {
       setLoading(false);
     }
