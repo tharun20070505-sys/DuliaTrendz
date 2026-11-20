@@ -6,8 +6,8 @@ import toast from 'react-hot-toast';
 import GoogleAuthButton from '../../components/common/GoogleAuthButton';
 
 const AdminLogin = () => {
-  const [email, setEmail] = useState('admin@duliatrendz.com');
-  const [password, setPassword] = useState('Admin@12345');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   const { login } = useAuth();

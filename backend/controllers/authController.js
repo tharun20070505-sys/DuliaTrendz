@@ -124,10 +124,10 @@ export const login = async (req, res, next) => {
 
     const normalizedEmail = email.toLowerCase().trim();
     let user = await User.findOne({ email: normalizedEmail });
+    if (!user) user = await migrateLegacyAdmin(normalizedEmail, password);
     if (!user && (normalizedEmail === 'admin@duliatrendz.com' || normalizedEmail === 'admin@duliatrenz.com')) {
       user = await User.findOne({ email: { $in: ['admin@duliatrendz.com', 'admin@duliatrenz.com'] } });
     }
-    if (!user) user = await migrateLegacyAdmin(normalizedEmail, password);
 
     if (!user || (req.path === '/admin/login' && !['admin', 'staff'].includes(user.role))) {
       return res.status(401).json({ success: false, message: 'Invalid email or password.' });
